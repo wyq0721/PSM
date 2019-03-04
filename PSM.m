@@ -1,15 +1,17 @@
-function [T_psm, e_psm, t_psm, delta_psm]=PSM(scan0,scan1,params)
-%% Function description polar scan matching
-%-------------------------------------------------------------------------------
+%% Function description: polar scan matching
+%===============================================================================
 % INPUT:
 % @scan0        previous raw data form like [r1 r2 ... rk]
 % @scan1        new raw data form like [r1 r2 ... rk]
-% @params       listing in the following
+% @params       listing in the function
 % OUTPUT:
 % @T_psm        3x3xk transform matrix that applying scan_now to align scan_pre
 % @e_psm        error metric of range
 % @t_psm        the calculation times per iteration
-% ------------------------------------------------------------------------------
+% DATE:         2018/11/11 wyq
+%===============================================================================
+
+function [T_psm, e_psm, t_psm, delta_psm]=PSM(scan0,scan1,params)
 
 if nargin<3
     % default parameters
@@ -43,7 +45,7 @@ scan1PSM_new=[new_a;new_r];
 tic;
 for iter =1:params.iter
     
-    % orientation
+    % orientation estimation
     e = 1000*ones(length(params.search_window_psm),1);
     j = 1;
     for i = params.search_window_psm
@@ -68,7 +70,7 @@ for iter =1:params.iter
         delta_O = delta_O+delta*params.resolution;
     end
     
-    % translation
+    % translation estimation
     delta_r =  scan0(2,:)-scan1PSM_new(2,:) ;
     index_r = abs(delta_r)<params.max_error;
     delta_r = delta_r(index_r);
@@ -80,7 +82,7 @@ for iter =1:params.iter
     H = [cos(scan1PSM_new(1,index_r))' sin(scan1PSM_new(1,index_r))'];
     delta_T = (H'*W*H)\H'*W*delta_r';
 
-    % transform
+    % transform current scan
     x = scan1PSM_trans(2,:).*cos(scan1PSM_trans(1,:)+delta_O)+delta_T(1);
     y = scan1PSM_trans(2,:).*sin(scan1PSM_trans(1,:)+delta_O)+delta_T(2);
     scan1PSM_trans = [atan2(y,x); sqrt(x.^2+y.^2)];
@@ -91,7 +93,7 @@ for iter =1:params.iter
     scan1PSM_new=[new_a;new_r];
     t_psm(iter) = toc;
     
-    % convergence analysis
+    % transformation record
     if iter == 1
         delta_psm(:,iter) = [delta_O;delta_T];
     else

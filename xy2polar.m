@@ -1,6 +1,11 @@
+%% Function description: transform scan from cartesian coordiante to polar coordinate
+%===============================================================================
+% INPUT:
+% @scanxy       the scan in cartesian coordiante
+% OUTPUT:
+% @scan         the scan in polar coordiante
+% DATE:         2018/11/11 wyq
+%===============================================================================
 function scan = xy2polar(scanxy)
-%% trans scan from cartesian coordiante to polar coordiante
 
-    scan(1,:) = atan2(scanxy(2,:),scanxy(1,:));
-    scan(2,:) = sqrt(scanxy(1,:).^2+scanxy(2,:).^2);
-%     polarplot(linspace(-pi/2,pi/2,size(scan,2)),scan,'.k');
+scan(1,:) = atan2(scanxy(2,:),scanxy(1,:));

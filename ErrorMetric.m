@@ -1,10 +1,23 @@
+%% Function description: the computation of error metric
+%===============================================================================
+% INPUT:
+% @scan0        reference raw data 
+% @scan1        cuurent raw data 
+% @params       same with function 'PSM'
+% @method       'RMS' or 'MSE'
+% OUTPUT:
+% @error        the error between two scans
+% DATE:         2018/11/11 wyq
+%===============================================================================
+
 function error = ErrorMetric(scan0,scan1,params,method)
 
-if strcmp(method,'PSM')
+if strcmp(method,'RMS')
     
+    % delete the bad points
     scan0 = scan0(:,and(scan0(2,:)>params.usable_range(1),scan0(2,:)<params.usable_range(2)));
     new_a = scan0(1,:);    
-    scan1_new = scan1(:,and(scan1(2,:)>params.usable_range(1),scan1(2,:)<params.usable_range(2))); % delete the bad points
+    scan1_new = scan1(:,and(scan1(2,:)>params.usable_range(1),scan1(2,:)<params.usable_range(2))); 
     new_r = interp1(scan1_new(1,:),scan1_new(2,:),new_a,'linear','extrap');
     scan1_new=[new_a;new_r];
     error = abs(scan0(2,:) - scan1_new(2,:));

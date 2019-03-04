@@ -1,5 +1,13 @@
+%% Function description:  apply the transformation on current scan
+%===============================================================================
+% INPUT:
+% @scan         the current scan before transformation
+% @T            the transformation
+% OUTPUT:
+% @scan_trans   the scan after transformation
+% DATE:         2018/11/11 wyq
+%===============================================================================
 function scan_trans = TransScan(scan,T)  
-%% apply the R&T
 
 scanxy = [scan(2,:).*cos(scan(1,:));scan(2,:).*sin(scan(1,:))];
 scan_transxy = T*[scanxy;ones(1,size(scanxy,2))];

@@ -1,3 +1,13 @@
+%% Script description: test for the use of 'PSM'
+%===============================================================================
+% INPUT:
+% @dataset                   Intel research lab in seattle
+% OUTPUT:
+% @Transmation Matrix        3x3xk transform matrix that aligns current scan to reference scan
+% @psm_time                  time of alignment
+% @psm_error                 error metric of alignment
+% DATE:                      2018/11/11 wyq
+%===============================================================================
 
 %% initial
 % load data
@@ -6,18 +16,18 @@ clc;
 load('seattle.mat');
 data = range;
 
-% parameters
-params.max_range = 1/2*pi; 
-params.usable_range = [0.2 20];
-params.weight_c = 0.1;
-params.weight_m = 2;
-params.search_window_psm = -50:50;
-params.resolution = 2*params.max_range/size(data,2);
-params.max_error = 1;%0.1;
-params.iter = 100;
+% default parameters
+params.max_range = pi/2;
+params.usable_range = [0.1 20];
+params.weight_c = 0.1; % computeW factor
+params.weight_m = 2; % computeW factor
+params.search_window_psm = -20:20; % search area in orientation estimation
+params.resolution = deg2rad(1);  % resolution of laser sensor in orientation correction
+params.max_error = 1;% threshold that data accepted in translation estimation
+params.iter = 100; % iterative times
 params.orient_threshold = deg2rad(0.1);%deg2rad(0.1);
 params.translate_threshold = 0.005;%0.005;
-
+    
 %% preprocess
 interval = 6;
 step = 888;
@@ -46,9 +56,11 @@ fontsize = 10;
 scan0xy = polar2xy(scan0(:,and(scan0(2,:)>params.usable_range(1),scan0(2,:)<params.usable_range(2))));
 scan1xy = polar2xy(scan1(:,and(scan1(2,:)>params.usable_range(1),scan1(2,:)<params.usable_range(2))));
 scan1PSM_transxy = polar2xy(scan1PSM_trans(:,and(scan1PSM_trans(2,:)>params.usable_range(1),scan1PSM_trans(2,:)<params.usable_range(2))));
-    figure(12);
+   
+figure(12);
     clf
     set(gcf,'position',[200 200 600 300])
+    
     % Original
     subplot('Position', [0.08 0.15 0.4 0.8]);
     set(gca,'fontsize',fontsize,'fontweight','bold','GridAlph', 0.03);
@@ -83,7 +95,8 @@ scan1PSM_transxy = polar2xy(scan1PSM_trans(:,and(scan1PSM_trans(2,:)>params.usab
 
 %% text display
 
-mse_psm = ErrorMetric(scan0,scan1PSM_trans,params,'MSE');
-disp(step)
-disp('    psm_time  psm_mse')
-disp([ time_psm_terminal mse_psm])
+psm_error = ErrorMetric(scan0,scan1PSM_trans,params,'MSE');
+disp('Transmation Matrix')
+disp(T_psm(:,:,index_terminal))
+disp('    psm_time  psm_error')
+disp([ time_psm_terminal psm_error])
