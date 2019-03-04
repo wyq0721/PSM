@@ -8,11 +8,12 @@
 % @psm_error                 error metric of alignment
 % DATE:                      2018/11/11 wyq
 %===============================================================================
+close all;
+clear;
+clc;
 
 %% initial
 % load data
-clear;
-clc;
 load('seattle.mat');
 data = range;
 
