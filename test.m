@@ -31,8 +31,8 @@ params.translate_threshold = 0.005;%0.005;
     
 %% preprocess
 interval = 6;
-step = 888;
-% step = random('unid',size(data,1));
+% step = 888;
+step = random('unid',size(data,1));
  
 scan0 = data(step,:);
 scan1 = data(step+interval,:);
