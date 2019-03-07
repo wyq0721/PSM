@@ -31,8 +31,8 @@ params.translate_threshold = 0.005;%0.005;
     
 %% preprocess
 interval = 6;
-% step = 888;
-step = random('unid',size(data,1));
+step = 12451;
+% step = random('unid',size(data,1));
  
 scan0 = data(step,:);
 scan1 = data(step+interval,:);
@@ -97,7 +97,7 @@ figure(12);
 %% text display
 
 psm_error = ErrorMetric(scan0,scan1PSM_trans,params,'MSE');
-disp('Transmation Matrix')
+disp('    Transmation Matrix')
 disp(T_psm(:,:,index_terminal))
 disp('    psm_time  psm_error')
 disp([ time_psm_terminal psm_error])
