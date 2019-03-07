@@ -1,6 +1,6 @@
 # PSM
 - Author: wyq<<771806310@qq.com>>
-- This project is written on Matlab based on the polar scan matching algorithm(https://github.com/wyq0721/PSM/blob/master/images/image-output.jpg)
+- This project is written on Matlab based on the polar scan matching algorithm(https://journals.sagepub.com/doi/abs/10.1177/0278364907082042)
 - Example( in test.m)
 - Input 
   - dataset: 'seattle.mat'
@@ -10,7 +10,7 @@
   - translate_termination: 0.005\[m]
 - Output
   - Figure
-    ![image-output]( https://github.com/wyq0721/ROS-GET/blob/master/images/catkin-compile.png     )
+    ![image-output](https://github.com/wyq0721/PSM/blob/master/images/image-output.jpg)
   - Display in Command Window
     ```
     BREAK: In PSM 7 Iter, Delta_Translation 0.002700 and Delta_Orientation 0.000246 is Smaller Than Threshold.
